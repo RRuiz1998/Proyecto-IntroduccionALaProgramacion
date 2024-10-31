@@ -6,9 +6,15 @@ public class MainSystem {
 
     public static void main(String[] args) {
         
+        //Inicializacion del sistema
+        EmployeeData adminEmployeeOption = new EmployeeData();
+        adminEmployeeOption.preloadedRegistry();
+        
         try {
-            EmployeeData adminEmployeeOption = new EmployeeData();
-            adminEmployeeOption.adminEmployeeInfo(adminEmployeeOption.preloadedRegistry());
+            adminEmployeeOption.adminEmployeeInfo();
+            
+            
+            
         } catch (Exception e) {
             System.out.println("Error"+ e);
         }
