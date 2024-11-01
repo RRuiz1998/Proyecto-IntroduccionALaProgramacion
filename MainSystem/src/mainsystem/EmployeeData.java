@@ -8,6 +8,7 @@ public class EmployeeData {
     
     ArrayList <ArrayList<String>> register = new ArrayList<>();
     
+
     
     //Registro precargado de informacion de empleados
     public void preloadedRegistry() {
@@ -38,11 +39,11 @@ public class EmployeeData {
     public void adminEmployeeInfo() {
         OUTER:
         while (true) {
-            String menuOne = JOptionPane.showInputDialog("Deseas realizar una gestion con la info de los empleados: \n1. Si \n2. No");
+            int menuOne = Integer.parseInt(JOptionPane.showInputDialog("Deseas realizar una gestion con la info de los empleados: \n1. Si \n2. No"));
             switch (menuOne) {
-                case "2":
+                case 2:
                     break OUTER;
-                case "1":
+                case 1:
                     int menuTwo = Integer.parseInt(JOptionPane.showInputDialog("Seleccione la opcion que desea realizar: \n1. Agregar empleado \n2. Modificar informacion \n3. Remover empleado"));
                     if (menuTwo == 1) {
                         addEmployee();
@@ -65,7 +66,7 @@ public class EmployeeData {
         System.out.println(register);
     }
     
-    //Modifica la Informacion del Empleado
+    //Modifica la informacion del empleado
     public void modifyEmployeeName () {
         System.out.println("El ID de los empleados no es modificable");
         String inputId = JOptionPane.showInputDialog("Ingrese el ID del empleado: ");
@@ -91,9 +92,6 @@ public class EmployeeData {
             if (element.equalsIgnoreCase(name)) {
                 register.remove(register.get(i));
                 System.out.println(register);
-                break;
-            }else{
-                System.out.println("Dato no valido");
                 break;
             }
         }
