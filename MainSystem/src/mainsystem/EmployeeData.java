@@ -2,120 +2,100 @@
 package mainsystem;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 
-public class EmployeeData {
-    
-    ArrayList <ArrayList<String>> register = new ArrayList<>();
-    
+public class MainSystem {
 
-    
-    //Registro precargado de informacion de empleados
-    public void preloadedRegistry() {
-        ArrayList<String> employee1 = new ArrayList();
-        employee1.add("Richard Ruiz");
-        employee1.add("000001");
-        register.add(employee1);
+    public static void main(String[] args) {
         
-        ArrayList<String> employee2 = new ArrayList();
-        employee2.add("Santiago Zamora");
-        employee2.add("000002");
-        register.add(employee2);
+        //Inicializacion del sistema
+        EmployeeData employeeData = new EmployeeData();
+        employeeData.preloadedRegistry();
         
-        ArrayList<String> employee3 = new ArrayList();
-        employee3.add("Edgar MOnge");
-        employee3.add("000003");
-        register.add(employee3);
+        //Inicializacion de las Salas de Cine (IMAX y VIP)
+        ArrayList<String> available = new ArrayList<>();
+        ArrayList<String> busy = new ArrayList<>();
+        ArrayList<List<String>> reserved = new ArrayList<>();
+        Theater imax = new Theater("30", "10am", "2pm", "Mufasa: El rey leon", "Demon Slayer: Kimetsu no Yaiba - Arco del Castillo infinito.", available, busy, reserved);
+        Theater vip = new Theater("30", "10am", "2pm", "Sonic 3, La pelicula", "La Guerra de los Rohirrim", available, busy, reserved);
         
-        ArrayList<String> employee4 = new ArrayList();
-        employee4.add("Josafat Garcia");
-        employee4.add("000004");
-        register.add(employee4);
+        //Inicializacion de la Salas de gimnasio
+        ClassGimnasio gimnasio = new ClassGimnasio("gimnasio");
         
-        System.out.println("Registro "+register);
-    }
-    
-    //Gestion de Informacion de Empleados
-    public void adminEmployeeInfo() {
-        OUTER:
-        while (true) {
-            int menuOne = Integer.parseInt(JOptionPane.showInputDialog("Deseas realizar una gestion con la info de los empleados: \n1. Si \n2. No"));
-            switch (menuOne) {
-                case 2:
-                    break OUTER;
-                case 1:
-                    int menuTwo = Integer.parseInt(JOptionPane.showInputDialog("Seleccione la opcion que desea realizar: \n1. Agregar empleado \n2. Modificar informacion \n3. Remover empleado"));
-                    if (menuTwo == 1) {
-                        addEmployee();
-                    }else if(menuTwo == 2) {
-                        modifyEmployeeName ();
-                    }else if(menuTwo == 3) {
-                        removeEmployee();
-                    }else{
-                        System.out.println("Verifique la informacion");
+        //Inicializacion de la Salas de yoga, baile, bar
+        SIstemasDeReservas yoga = new SIstemasDeReservas();
+        SIstemasDeReservas baile = new SIstemasDeReservas();
+        SIstemasDeReservas bar = new SIstemasDeReservas();
+
+        
+
+        try {
+            OUTER:
+            while (true) {
+                int managementOption = Integer.parseInt(JOptionPane.showInputDialog("Bienvenido a al plaforma de gestion de actividades!! \n\nMenu:\n1. Gestionar informacion de empleados\n2. Reservar actividades\n\nPor favor indica que gestion deseas realizar: "));
+                if (!(managementOption == 1 || managementOption == 2 || managementOption == 3)) {
+                    System.out.println("Por favor verifique la informacion introducida");
+                } else {
+                    switch (managementOption) {
+                        case 1 -> employeeData.gestion();
+                        case 2 -> {
+                            int bookingOption = Integer.parseInt(JOptionPane.showInputDialog("Has ingresado a la seccion de reservaciones!\n\nMenu:\n1. Cine \n2. Gimnasio\n3. Yoga\n4. Baile\n5. Bar\n6. Salir\n\nIntroduzca a cual actividad desea ingresar: "));
+                            if (bookingOption < 1 || bookingOption > 6) {
+                                System.out.println("Por favor verifique la informacion introducida");
+                            } else {
+                                switch (bookingOption) {
+                                    case 1 -> {
+                                        int option = Integer.parseInt(JOptionPane.showInputDialog("Has Accedido al Menu del Cine!\n\nOpciones disponibles:\n1. IMAX\n2. VIP\n3. Volver\n\nIndica la sala que deseas: "));
+                                        switch (option) {
+                                            case 1 -> imax.reservation(employeeData.register);
+                                            case 2 -> vip.reservation(employeeData.register);
+                                            default -> System.out.println("Verifica la informacion ingresada");
+                                        }
+                                    }
+                                    case 2 -> gimnasio.gestion();
+                                    case 3 -> yoga.gestion();
+                                    case 4 -> baile.gestion();
+                                    case 5 -> bar.gestion();
+                                    case 6 -> {break OUTER;}
+                                }
+                            }
+                        }
                     }
-                default:
+                }
             }
+
+            
+            
+        } catch (Exception e) {
+            System.out.println("Por favor verifique la informacion introducida"+ e);
         }
-    }
+        
+        
+        
+        
+        
+        
+//        SIstemasDeReservas sistema = new SIstemasDeReservas();
+//
+//        System.out.println(sistema.registrarReserva(1));
+//        System.out.println(sistema.registrarReserva(2));
+//        System.out.println(sistema.registrarReserva(1));
+//
+//        System.out.println("\n--- Estado de reservas ---");
+//        sistema.mostrarReservas();
+//
+//        System.out.println("\nEliminando la reserva con ID 2...");
+//        System.out.println(sistema.eliminarReserva(2));
+//
+//        System.out.println("\n--- Estado actualizado ---");
+//        sistema.mostrarReservas();
+//        
+//        
+        
+        
+        
     
-    //Agrega Empleados del sistema
-    public void addEmployee() {
-        EmployeeData dataSaver = new EmployeeData();
-        register.add(dataSaver.registeringEmployee(addingName(), addingId()));
-        System.out.println(register);
-    }
-    
-    //Modifica la informacion del empleado
-    public void modifyEmployeeName () {
-        System.out.println("El ID de los empleados no es modificable");
-        String inputId = JOptionPane.showInputDialog("Ingrese el ID del empleado: ");
-        for (int i = 0; i < register.size(); i++) {
-            String employeeId = register.get(i).get(1);
-            if (inputId.equals(employeeId)) {
-                String inputName = JOptionPane.showInputDialog("Ingrese el nombre correcto: ");
-                register.get(i).set(0, inputName);
-                System.out.println(register);
-                break;
-            }else{
-                System.out.println("Dato no valido");
-                break;
-            }
-        }
-    }
-    
-    //Remueve Empleados del Sistema
-    public void removeEmployee() {
-        String name = JOptionPane.showInputDialog("Indique el nombre del empleado a remover: ");
-        for (int i = 0; i < register.size(); i++) {
-            String element = register.get(i).get(0);
-            if (element.equalsIgnoreCase(name)) {
-                register.remove(register.get(i));
-                System.out.println(register);
-                break;
-            }
-        }
-    }
-    
-    //Une Nombre de Empleado con ID
-    public ArrayList<String> registeringEmployee(String id, String name) {
-        ArrayList <String> list = new ArrayList<>();
-        list.add(id);
-        list.add(name);
-        return list;
-    }
- 
-    //Guarda el Nombre del Empleado
-    public String addingName(){
-        String registeredName = JOptionPane.showInputDialog("Introduzca el nombre del empleado: ");
-        return registeredName;
-    }
-    
-    //Generate unique ID 
-    public String addingId() {
-        int randomNumber = (int)(Math.random()* 999999)+1;
-        return String.valueOf(randomNumber);
-    }
-}
-    
+    }        
+}   
 
