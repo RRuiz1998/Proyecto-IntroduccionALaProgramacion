@@ -13,7 +13,7 @@ public class EmployeeData {
     //Registro precargado de informacion de empleados
     public void preloadedRegistry() {
         ArrayList<String> employee1 = new ArrayList();
-        employee1.add("Richard Ruiz");
+        employee1.add("Tracy Ruiz");
         employee1.add("000001");
         register.add(employee1);
         
@@ -39,40 +39,56 @@ public class EmployeeData {
     public void gestion() {
         OUTER:
         while (true) {
-            int option = Integer.parseInt(JOptionPane.showInputDialog("Has ingresado a la gestion de empleados\n\nMenu:\n1. Agregar empleado \n2. Modificar informacion \n3. Remover empleado\n4. Volver\n\nSeleccione la opcion que desea realizar: "));
-                switch (option) {
-                    case 1 -> addEmployee();
-                    case 2 -> modifyEmployeeName ();
-                    case 3 -> removeEmployee();
-                    case 4 -> {break OUTER;}
-                    default -> System.out.println("Verifique la informacion");
-                }
-            
+            String option = JOptionPane.showInputDialog("Has ingresado a la gestion de empleados\n\nEn este apartado podras realiazar diversas funciones con la informacion de los empleados\nCon el fin de facilitar el uso se te agrega el menu de opciones disponibles\n\nMenu:\n1. Agregar empleado \n2. Modificar informacion \n3. Remover empleado\n\nCualquier otra tecla para salir\n\nSeleccione la opcion que desea realizar: ");
+            if (option == null) {
+                break;
+            }
+            switch (option) {
+                case "1" -> addEmployee();
+                case "2" -> modifyEmployeeName ();
+                case "3" -> removeEmployee();
+                default -> {break OUTER;}
+            }
         }
     }
     
     //Agrega Empleados del sistema
     public void addEmployee() {
-        EmployeeData dataSaver = new EmployeeData();
-        register.add(dataSaver.registeringEmployee(addingName(), addingId()));
+        ArrayList<String> newEmployeeSet = new ArrayList<>();
+        
+        String name = addingName();
+        String id = addingId();
+        if (!(name == null)) {
+            newEmployeeSet.add(name);
+            newEmployeeSet.add(id);
+            register.add(newEmployeeSet);  //set de informacion del empleado nuevo registrada en el sistema
+        }        
         System.out.println(register);
     }
     
     //Modifica la informacion del empleado
     public void modifyEmployeeName () {
-        System.out.println("El ID de los empleados no es modificable");
-        String inputId = JOptionPane.showInputDialog("Ingrese el ID del empleado: ");
-        for (int i = 0; i < register.size(); i++) {
-            String employeeId = register.get(i).get(1);
-            if (inputId.equals(employeeId)) {
-                String inputName = JOptionPane.showInputDialog("Ingrese el nombre correcto: ");
-                register.get(i).set(0, inputName);
-                System.out.println(register);
-                break;
-            }else{
-                System.out.println("Dato no valido");
+        while (true) {
+            String inputId = JOptionPane.showInputDialog("Has ingresado a la seccion de modificacion de informacion de empleados\n\nImportante:\nEl ID de los empleados no es modificable\nSolo es permitido modificar el nombre\n\nDigite 0 para salir\n\nPor favor ingrese el ID del empleado al que se le realizaran los cambios requeridos: ");
+            if (inputId == null || !(inputId.equals("0"))) {
+                if (!(inputId == null)){
+                    for (int i = 0; i < register.size(); i++) {
+                        String employeeId = register.get(i).get(1);
+                        if (inputId.equals(employeeId)) {
+                            String inputName = JOptionPane.showInputDialog("Ingrese el nombre correcto: ");
+                            register.get(i).set(0, inputName);
+                            System.out.println(register);
+                            break;
+                        }
+                    }
+                    System.out.println("El ID ingresado no se encuentra en la base de datos");
+                } else {
+                    break;
+                }
+            } else {
                 break;
             }
+        
         }
     }
     
