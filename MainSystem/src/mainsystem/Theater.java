@@ -16,10 +16,11 @@ public class Theater {
     ArrayList<String> availableSpots;
     ArrayList<String> busySpots;
     ArrayList<List<String>> reservedList;
+    ArrayList<String> registeredIds;
 
-    
+
     //Construtor
-    public Theater(String spots, String schecudleOne, String scheduleTwo, String movieOne, String movieTwo, ArrayList<String> availableSpots, ArrayList<String> busySpots, ArrayList<List<String>> reservedList) {
+    public Theater(String spots, String schecudleOne, String scheduleTwo, String movieOne, String movieTwo, ArrayList<String> availableSpots, ArrayList<String> busySpots, ArrayList<List<String>> reservedList, ArrayList<String> registedIds) {
         this.spots = spots;
         this.schecudleOne = schecudleOne;
         this.scheduleTwo = scheduleTwo;
@@ -28,95 +29,90 @@ public class Theater {
         this.availableSpots = availableSpots;
         this.busySpots = busySpots;
         this.reservedList = reservedList;
+        this.registeredIds = registedIds;
     }
-      
-    
+
+        
     //Llama funciones que el usuario desea
     public void gestion (ArrayList<ArrayList<String>> register) {
-        this.reservation(register);
+        while (true) {
+            String option = JOptionPane.showInputDialog("Estas en el apartado especial para nuestras salas de cine. \nEn esta seccion podras elegir que funcion deseas realizar\nPara facilidad agregamos un menu de opciones disponibles\n\nMenu:\n1. Crear una reservacion\n2. Realizar una actualizacion a la configuraciones\n\nDigite cualquier otra tecla para salir\n\nintroduzaca la opcion que deseas realizar: ");
+            if (option == null || !(option.equals("1") || option.equals("2"))) {
+                break;
+            }
+            switch (option) {
+                case "1" -> this.reservation(register);
+                case "2" -> this.updateSettings();
+            }
+        }
+        
+
+        
+        
     }
         
     
     
     //Se crea solicitud para reserva de un spot en la sala IMAX
     public void reservation(ArrayList <ArrayList<String>> register) {
+        List <String> confirmedList = new ArrayList<>();
         this.view();
-        OUTER:
-        while (true) {
-        String bookingOption = JOptionPane.showInputDialog("Indique el spot a reservar: ");         
-            for (int i = 0; i < this.availableSpots.size(); i++) {
-            if (bookingOption.equalsIgnoreCase(this.availableSpots.get(i)) ) {
-                String selectedSpot = this.availableSpots.get(i);
-                this.busySpots.add(this.availableSpots.get(i));
-                this.availableSpots.remove(this.availableSpots.get(i)); 
-
-                while (true) {
-                    String confirmedId = this.confirmingRequest(register, selectedSpot);
-                    if (confirmedId != ""){
-                        break;
-                    } 
-                }
-            }
+        
+        String employeeId = JOptionPane.showInputDialog("Indique el ID del empleado: ");
+        for (int i = 0; i < register.size(); i++) {
+            if (register.get(i).contains(employeeId)) {
+                String selectedSpot = JOptionPane.showInputDialog("Indique el spot que desea reservar: ");
+                selectedSpot = selectedSpot.toUpperCase();
+                if (availableSpots.contains(selectedSpot) && !(registeredIds.contains(employeeId))) {
+                    busySpots.add(selectedSpot);
+                    availableSpots.remove(selectedSpot);
+                    confirmedList.add(register.get(i).get(0));
+                    confirmedList.add(register.get(i).get(1));
+                    confirmedList.add(selectedSpot);
+                    reservedList.add(confirmedList);
+                    registeredIds.add(employeeId);
+                } 
             } 
-            break;
         }
-    }
+        System.out.println(this.reservedList);
+        System.out.println("Spot Reservado: "+confirmedList+"\n");        
+    }    
 
-      
-  
-        
-    //Se confirma los datos de entrada y se asigna spot al empleado solicitante
-    public String confirmingRequest (ArrayList<ArrayList<String>> register, String selectedSpot) {
-        List <String> confirmedList= new ArrayList<>();
-        
-        String employeeId = JOptionPane.showInputDialog("Ingrese el ID del empleado: ");
-        String confirmedId = "";
-        
-        int inicializador = this.reservedList.size();
-        if (this.reservedList.isEmpty()) {
-            inicializador = 0;
-        }
-        
-        for (int index = 0; index <= inicializador; index++) {
-            
-            if (this.reservedList.isEmpty() || !(this.reservedList.get(index).contains(employeeId))) {
-                for (int i = 0; i < register.size(); i++) {
-                    if (register.get(i).get(1).equalsIgnoreCase(employeeId)) {
-                        confirmedList.add(register.get(i).get(1));
-                        confirmedList.add(register.get(i).get(0));
-                        confirmedList.add(selectedSpot);
-                        confirmedId = register.get(i).get(1);
-                        this.reservedList.add(confirmedList);
-                    }
-                }
-            } else {
-
-            }
-        }
-        System.out.println(this.reservedList+"\n");
-        return confirmedId;
-    };
     
     //Modificador de opciones predeterminadas de las salas
     public void updateSettings() {
         OUTER:
         while (true){
-            int specificOption = Integer.parseInt(JOptionPane.showInputDialog("Indique cual opcion desea modificar: \n1. Nombre de sala \n2. Horario de inicio pelicula 1 \n3. Horario de inicio pelicula 2 \n4. Pelicula 1 \n5. Pelicula 2 \n6. Salir"));
+           settingsView();
+
+            String specificOption = JOptionPane.showInputDialog("Perfecto, estas en la seccion para la modificacion de configuraciones\nEn este segmento lograras localizar las distintas opciones que son disponibles de ajustar\n\nIndique cual opcion desea modificar: \n\n1. Pelicula 1 \n2. Pelicula 2 \n3. Horario de inicio pelicula 1 \n4. Horario de inicio pelicula 2 \n5. Spots disponibles en sala\n\nDigita cualquier otra tecla para salir");
+            if (specificOption == null || !(specificOption.equals("1") || specificOption.equals("2") || specificOption.equals("3") || specificOption.equals("4") || specificOption.equals("5"))) {
+                break;
+            }
+            
             switch (specificOption) {
-                case 1 -> this.spots = JOptionPane.showInputDialog("Introduzca la cantidad de spots disponibles para la sala (Maximo 30)");
-                case 2 -> this.schecudleOne = JOptionPane.showInputDialog("Introduzca el nuevo horario para la primer jornada de peliculas: ");
-                case 3 -> this.scheduleTwo = JOptionPane.showInputDialog("Introduzca el nuevo horario para la segunda jornada de peliculas: ");
-                case 4 -> this.movieOne = JOptionPane.showInputDialog("Introduzca el titulo de la pelicula que sera transmitida en la primer jornada: ");
-                case 5 -> this.movieTwo = JOptionPane.showInputDialog("Introduzca el titulo de la pelicula que sera transmitida en la segunda jornada: ");
-                case 6 -> {break OUTER;}
+                case "1" -> this.movieOne = JOptionPane.showInputDialog("Introduzca el titulo de la pelicula que sera transmitida en la primer jornada: ");
+                case "2" -> this.movieTwo = JOptionPane.showInputDialog("Introduzca el titulo de la pelicula que sera transmitida en la segunda jornada: ");
+                case "3" -> this.schecudleOne = JOptionPane.showInputDialog("Introduzca el nuevo horario para la primer jornada de peliculas: ");
+                case "4" -> this.scheduleTwo = JOptionPane.showInputDialog("Introduzca el nuevo horario para la segunda jornada de peliculas: ");
+                case "5" -> this.spots = JOptionPane.showInputDialog("Introduzca la cantidad de spots disponibles para la sala (Maximo 30)");
             }
-            if (specificOption > 0 && specificOption < 6){
-                int endOption = Integer.parseInt(JOptionPane.showInputDialog("Desea realizar otra modificacion? \n1. Si \n2. No"));
-                if (endOption == 2) {
-                    break;
-            }
+            
+            String endOption = JOptionPane.showInputDialog("Si desea realizar otra modificacion digite 1 \nDigite cualquier otra tecla para salir");
+            if (endOption == null || endOption.equals("1")) {
+                break;
             }
         }
+    }
+    
+    //Settings view
+    public void settingsView () {
+        System.out.println("Titulo: "+this.movieOne+" (Sera transmitida en el horario "+this.schecudleOne+")");
+        System.out.println("Titulo: "+this.movieTwo+" (Sera transmitida en el horario "+this.scheduleTwo+")");
+        System.out.println("Inicio de primer tanta: "+this.schecudleOne);
+        System.out.println("inicio de segunda tanta: "+this.scheduleTwo);
+        System.out.println("Cantidad de spots disponible en sala "+this.spots);
+        System.out.println("");
     }
 
         
