@@ -1,9 +1,9 @@
 
-package mainsystem;
+package main;
 
 import javax.swing.JOptionPane;
 
-public class SIstemasDeReservas {
+public class SistemasDeReservas {
     private int maxCupos = 30;
     private int reservas7pm = 0;
     private int reservas8pm = 0;
@@ -67,6 +67,5 @@ public class SIstemasDeReservas {
         }
         System.out.println("Total: " + reservas7pm + " en 7pm y " + reservas8pm + " en 8pm.");
     }
+    
 }
-
-
