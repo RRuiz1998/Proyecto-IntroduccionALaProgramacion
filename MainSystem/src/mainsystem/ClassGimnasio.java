@@ -1,10 +1,10 @@
 
-package mainsystem;
+package main;
 
 import javax.swing.JOptionPane;
 
 public class ClassGimnasio {
-    
+        
     // Asignación de objetos donde se guardarán los datos
     private String tipoClase;      // Tipo de clase: Yoga o Baile
     private int espaciosOcupados;  
@@ -71,6 +71,3 @@ public class ClassGimnasio {
         return espaciosOcupados;
     }
 }
-
-
-
