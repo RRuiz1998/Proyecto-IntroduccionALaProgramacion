@@ -1,33 +1,33 @@
 
-package mainsystem;
+package main;
 
-import java.util.ArrayList;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 
 public class EmployeeData {
     
-    ArrayList <ArrayList<String>> register = new ArrayList<>();
+        
+    Vector <Vector<String>> register = new Vector<>();
     
-
     
     //Registro precargado de informacion de empleados
     public void preloadedRegistry() {
-        ArrayList<String> employee1 = new ArrayList();
-        employee1.add("Tracy Ruiz");
+        Vector<String> employee1 = new Vector();
+        employee1.add("Richard Ruiz");
         employee1.add("000001");
         register.add(employee1);
         
-        ArrayList<String> employee2 = new ArrayList();
+        Vector<String> employee2 = new Vector();
         employee2.add("Santiago Zamora");
         employee2.add("000002");
         register.add(employee2);
         
-        ArrayList<String> employee3 = new ArrayList();
+        Vector<String> employee3 = new Vector();
         employee3.add("Edgar Monge");
         employee3.add("000003");
         register.add(employee3);
         
-        ArrayList<String> employee4 = new ArrayList();
+        Vector<String> employee4 = new Vector();
         employee4.add("Josafat Garcia");
         employee4.add("000004");
         register.add(employee4);
@@ -39,22 +39,35 @@ public class EmployeeData {
     public void gestion() {
         OUTER:
         while (true) {
-            String option = JOptionPane.showInputDialog("Has ingresado a la gestion de empleados\n\nEn este apartado podras realiazar diversas funciones con la informacion de los empleados\nCon el fin de facilitar el uso se te agrega el menu de opciones disponibles\n\nMenu:\n1. Agregar empleado \n2. Modificar informacion \n3. Remover empleado\n\nCualquier otra tecla para salir\n\nSeleccione la opcion que desea realizar: ");
-            if (option == null) {
+            String option = JOptionPane.showInputDialog("""
+                                                        Has ingresado a la gestion de empleados
+                                                        
+                                                        En este apartado podras realiazar diversas funciones con la informacion de los empleados
+                                                        Con el fin de facilitar el uso se te agrega el menu de opciones disponibles
+                                                        
+                                                        Menu:
+                                                        1. Agregar empleado 
+                                                        2. Modificar informacion 
+                                                        3. Remover empleado
+                                                        
+                                                        Cualquier otra tecla para salir
+                                                        
+                                                        Seleccione la opcion que desea realizar: """);
+            
+            if (option == null || !(option.equals("1") || option.equals("2") || option.equals("3"))) {
                 break;
             }
             switch (option) {
                 case "1" -> addEmployee();
-                case "2" -> modifyEmployeeName ();
+                case "2" -> modifyEmployeeName();
                 case "3" -> removeEmployee();
-                default -> {break OUTER;}
             }
         }
     }
     
     //Agrega Empleados del sistema
     public void addEmployee() {
-        ArrayList<String> newEmployeeSet = new ArrayList<>();
+        Vector<String> newEmployeeSet = new Vector<>();
         
         String name = addingName();
         String id = addingId();
@@ -69,7 +82,17 @@ public class EmployeeData {
     //Modifica la informacion del empleado
     public void modifyEmployeeName () {
         while (true) {
-            String inputId = JOptionPane.showInputDialog("Has ingresado a la seccion de modificacion de informacion de empleados\n\nImportante:\nEl ID de los empleados no es modificable\nSolo es permitido modificar el nombre\n\nDigite 0 para salir\n\nPor favor ingrese el ID del empleado al que se le realizaran los cambios requeridos: ");
+            String inputId = JOptionPane.showInputDialog("""
+                                                         Has ingresado a la seccion de modificacion de informacion de empleados
+                                                         
+                                                         Importante:
+                                                         El ID de los empleados no es modificable
+                                                         Solo es permitido modificar el nombre
+                                                         
+                                                         Digite 0 para salir
+                                                         
+                                                         Por favor ingrese el ID del empleado al que se le realizaran los cambios requeridos: """);
+            
             if (inputId == null || !(inputId.equals("0"))) {
                 if (!(inputId == null)){
                     for (int i = 0; i < register.size(); i++) {
@@ -106,8 +129,8 @@ public class EmployeeData {
     }
     
     //Une Nombre de Empleado con ID
-    public ArrayList<String> registeringEmployee(String id, String name) {
-        ArrayList <String> list = new ArrayList<>();
+    public Vector<String> registeringEmployee(String id, String name) {
+        Vector <String> list = new Vector<>();
         list.add(id);
         list.add(name);
         return list;
@@ -124,6 +147,5 @@ public class EmployeeData {
         int randomNumber = (int)(Math.random()* 999999)+1;
         return String.valueOf(randomNumber);
     }
-}
     
-
+}
