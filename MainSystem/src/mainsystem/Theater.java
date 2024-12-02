@@ -36,7 +36,19 @@ public class Theater {
     //Llama funciones que el usuario desea
     public void gestion (ArrayList<ArrayList<String>> register) {
         while (true) {
-            String option = JOptionPane.showInputDialog("Estas en el apartado especial para nuestras salas de cine. \nEn esta seccion podras elegir que funcion deseas realizar\nPara facilidad agregamos un menu de opciones disponibles\n\nMenu:\n1. Crear una reservacion\n2. Realizar una actualizacion a la configuraciones\n\nDigite cualquier otra tecla para salir\n\nintroduzaca la opcion que deseas realizar: ");
+            String option = JOptionPane.showInputDialog("""
+                                                        Estas en el apartado especial para nuestras salas de cine. 
+                                                        En esta seccion podras elegir que funcion deseas realizar
+                                                        Para facilidad agregamos un menu de opciones disponibles
+                                                        
+                                                        Menu:
+                                                        1. Crear una reservacion
+                                                        2. Realizar una actualizacion a la configuraciones
+                                                        
+                                                        Digite cualquier otra tecla para salir
+                                                        
+                                                        introduzaca la opcion que deseas realizar: """);
+            
             if (option == null || !(option.equals("1") || option.equals("2"))) {
                 break;
             }
@@ -53,7 +65,7 @@ public class Theater {
         
     
     
-    //Se crea solicitud para reserva de un spot en la sala IMAX
+    //Se crea solicitud para reserva de un spot en la sala de cine
     public void reservation(ArrayList <ArrayList<String>> register) {
         List <String> confirmedList = new ArrayList<>();
         this.view();
@@ -85,7 +97,20 @@ public class Theater {
         while (true){
            settingsView();
 
-            String specificOption = JOptionPane.showInputDialog("Perfecto, estas en la seccion para la modificacion de configuraciones\nEn este segmento lograras localizar las distintas opciones que son disponibles de ajustar\n\nIndique cual opcion desea modificar: \n\n1. Pelicula 1 \n2. Pelicula 2 \n3. Horario de inicio pelicula 1 \n4. Horario de inicio pelicula 2 \n5. Spots disponibles en sala\n\nDigita cualquier otra tecla para salir");
+            String specificOption = JOptionPane.showInputDialog("""
+                                                                Perfecto, estas en la seccion para la modificacion de configuraciones
+                                                                En este segmento lograras localizar las distintas opciones que son disponibles de ajustar
+                                                                
+                                                                Indique cual opcion desea modificar: 
+                                                                
+                                                                1. Pelicula 1 
+                                                                2. Pelicula 2 
+                                                                3. Horario de inicio pelicula 1 
+                                                                4. Horario de inicio pelicula 2 
+                                                                5. Spots disponibles en sala
+                                                                
+                                                                Digita cualquier otra tecla para salir""");
+            
             if (specificOption == null || !(specificOption.equals("1") || specificOption.equals("2") || specificOption.equals("3") || specificOption.equals("4") || specificOption.equals("5"))) {
                 break;
             }
@@ -98,7 +123,10 @@ public class Theater {
                 case "5" -> this.spots = JOptionPane.showInputDialog("Introduzca la cantidad de spots disponibles para la sala (Maximo 30)");
             }
             
-            String endOption = JOptionPane.showInputDialog("Si desea realizar otra modificacion digite 1 \nDigite cualquier otra tecla para salir");
+            String endOption = JOptionPane.showInputDialog("""
+                                                           Si desea realizar otra modificacion digite 1 
+                                                           Digite cualquier otra tecla para salir""");
+            
             if (endOption == null || endOption.equals("1")) {
                 break;
             }
